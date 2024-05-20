@@ -1,4 +1,5 @@
 import { Response } from "express";
+import { IAnyObject } from "../../utils/types";
 import Product from "../Product/product.model";
 import IOrder from "./order.interface";
 import Order from "./order.model";
@@ -77,8 +78,14 @@ const createOrderService = async (orderData: IOrder, res: Response) => {
   }
 };
 
+const getAllOrderService = async (find: IAnyObject) => {
+  const result = await Order.find(find);
+  return result;
+};
+
 const orderServices = {
   createOrderService,
+  getAllOrderService,
 };
 
 export default orderServices;
