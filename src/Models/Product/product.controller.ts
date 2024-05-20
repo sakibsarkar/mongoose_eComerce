@@ -2,6 +2,15 @@ import { Request, Response } from "express";
 import { zodProduct } from "./product.interface";
 import productService from "./product.service";
 
+// productServices
+const {
+  createProductService,
+  deleteSingleProductService,
+  getAllProductService,
+  getSingleProductService,
+  updateSingleProductService,
+} = productService;
+
 // create a new product
 export const createProductController = async (req: Request, res: Response) => {
   try {
@@ -21,7 +30,7 @@ export const createProductController = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await productService.createProductService(data);
+    const result = await createProductService(data);
 
     res.status(200).json({
       success: true,
@@ -40,7 +49,7 @@ export const createProductController = async (req: Request, res: Response) => {
 // get all products
 export const getAllProductController = async (req: Request, res: Response) => {
   try {
-    const result = await productService.getAllProductService();
+    const result = await getAllProductService();
     res.status(200).json({
       success: true,
       message: "Products fetched successfully!",
@@ -61,9 +70,9 @@ export const getSingleProductController = async (
   res: Response
 ) => {
   try {
-    const productId = req.params.id;
+    const productId = req.params.productId;
 
-    const result = await productService.getSingleProductService(productId);
+    const result = await getSingleProductService(productId);
     if (!result) {
       return res.json({
         success: false,
@@ -90,7 +99,7 @@ export const updateSingleProductController = async (
   res: Response
 ) => {
   try {
-    const productId = req.params.id;
+    const productId = req.params.productId;
     const { body } = req;
     if (!body) {
       return res.status(400).json({
@@ -99,10 +108,7 @@ export const updateSingleProductController = async (
       });
     }
 
-    const result = await productService.updateSingleProductService(
-      productId,
-      req.body
-    );
+    const result = await updateSingleProductService(productId, req.body);
 
     console.log(result, "log");
 
@@ -122,6 +128,35 @@ export const updateSingleProductController = async (
     res.status(500).json({
       success: false,
       message: "Couldn't update data",
+      error,
+    });
+  }
+};
+
+// delete single product
+export const deleteSingleProductController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const productId = req.params.productId;
+    const result = await deleteSingleProductService(productId);
+    if (!result) {
+      return res.status(400).json({
+        success: false,
+        message: "Failed to delete product",
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      message: "Product deleted successfully!",
+      data: null,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete product",
       error,
     });
   }

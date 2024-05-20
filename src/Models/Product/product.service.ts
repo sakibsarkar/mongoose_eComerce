@@ -27,12 +27,18 @@ const updateSingleProductService = async (
   return result;
 };
 
+const deleteSingleProductService = async (id: string) => {
+  const result = await Product.findByIdAndDelete(id);
+  return result;
+};
+
 // services object
 const productService = {
   createProductService,
   getAllProductService,
   getSingleProductService,
   updateSingleProductService,
+  deleteSingleProductService,
 };
 
 export default productService;
