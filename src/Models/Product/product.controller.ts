@@ -58,7 +58,6 @@ export const getAllProductController = async (req: Request, res: Response) => {
       find.name = new RegExp(searchTerm as string, "i");
     }
 
-
     const result = await getAllProductService(find);
     res.status(200).json({
       success: true,
@@ -68,7 +67,7 @@ export const getAllProductController = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: "products not  find",
+      message: "products not found",
       error,
     });
   }
