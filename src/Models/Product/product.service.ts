@@ -16,11 +16,23 @@ const getSingleProductService = async (id: string) => {
   return result;
 };
 
+const updateSingleProductService = async (
+  id: string,
+  updateData: IProduct | any
+) => {
+  const result = Product.findByIdAndUpdate(id, updateData, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
+
 // services object
 const productService = {
   createProductService,
   getAllProductService,
   getSingleProductService,
+  updateSingleProductService,
 };
 
 export default productService;

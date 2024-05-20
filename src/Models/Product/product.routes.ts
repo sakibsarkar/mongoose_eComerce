@@ -2,7 +2,8 @@ import express from "express";
 import {
   createProductController,
   getAllProductController,
-  getSingleProduct,
+  getSingleProductController,
+  updateSingleProductController,
 } from "./product.controller";
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.post("/products", createProductController);
 // get all products
 router.get("/products", getAllProductController);
 // id based single product
-router.get("/products/:id", getSingleProduct);
+router.get("/products/:id", getSingleProductController);
 // update single product
-router.put("/products/:id", getSingleProduct);
+router.put("/products/:id", updateSingleProductController);
 export default router;
