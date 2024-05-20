@@ -1,7 +1,6 @@
 import express from "express";
 import morgan from "morgan";
-import routes from "./routes";
-
+import product from "./Models/Product/product.routes";
 const app = express();
 
 // middleweres
@@ -11,6 +10,6 @@ app.get("/", (req, res) => {
   res.send("Hello from server");
 });
 
-app.use("/", routes);
+app.use("/api", product);
 
 export default app;
