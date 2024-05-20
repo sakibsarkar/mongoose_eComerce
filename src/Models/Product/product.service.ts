@@ -1,3 +1,4 @@
+import { IAnyObject } from "../../utils/types";
 import IProduct from "./product.interface";
 import Product from "./product.model";
 
@@ -6,15 +7,17 @@ const createProductService = async (payload: IProduct) => {
   return result;
 };
 
-const getAllProductService = async () => {
-  const result = await Product.find();
+const getAllProductService = async (query: IAnyObject) => {
+  const result = await Product.find(query);
   return result;
 };
 
 const getSingleProductService = async (id: string) => {
-  const result = await Product.findById(id);
+  const result = await Product.find({ _id: id });
   return result;
 };
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 const updateSingleProductService = async (
   id: string,

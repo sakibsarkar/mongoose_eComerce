@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+
+import { IAnyObject } from "../../utils/types";
 import { zodProduct } from "./product.interface";
 import productService from "./product.service";
 
@@ -49,16 +51,23 @@ export const createProductController = async (req: Request, res: Response) => {
 // get all products
 export const getAllProductController = async (req: Request, res: Response) => {
   try {
-    const result = await getAllProductService();
+    const { searchTerm } = req.query;
+
+    const find: IAnyObject = {};
+    if (searchTerm) {
+      find.name = new RegExp(searchTerm as string, "i");
+    }
+
+    const result = await getAllProductService(find);
     res.status(200).json({
       success: true,
       message: "Products fetched successfully!",
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: "Internal Server error",
+      message: "products not  find",
       error,
     });
   }
@@ -85,9 +94,9 @@ export const getSingleProductController = async (
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: "Internal Server error",
+      message: "Product not found",
       error,
     });
   }
@@ -110,8 +119,6 @@ export const updateSingleProductController = async (
 
     const result = await updateSingleProductService(productId, req.body);
 
-    console.log(result, "log");
-
     if (!result) {
       return res.status(400).json({
         success: false,
@@ -125,7 +132,7 @@ export const updateSingleProductController = async (
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
       message: "Couldn't update data",
       error,
@@ -154,7 +161,7 @@ export const deleteSingleProductController = async (
       data: null,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
       message: "Failed to delete product",
       error,
