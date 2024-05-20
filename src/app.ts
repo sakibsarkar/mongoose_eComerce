@@ -1,5 +1,6 @@
 import express from "express";
 import morgan from "morgan";
+import order from "./Models/Order/order.routes";
 import product from "./Models/Product/product.routes";
 const app = express();
 
@@ -11,5 +12,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", product);
+app.use("/api", order);
 
 export default app;
