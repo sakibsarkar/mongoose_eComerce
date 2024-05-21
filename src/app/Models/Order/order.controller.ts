@@ -32,26 +32,24 @@ export const getAllOrderController = async (req: Request, res: Response) => {
     const { email } = req.query;
 
     // response data
-    const response = {
-      message: "Orders fetched successfully!",
-    };
 
     const find: IAnyObject = {};
     if (email) {
       find.email = email;
-      response.message = "Orders fetched successfully for user email!";
     }
 
     const result = await getAllOrderService(find);
-    if (result.length <= 0 && email) {
-      response.message = "Order not found";
-    }
 
-    res.status(200).json({
+    const response: IAnyObject = {
       success: result.length > 0,
-      ...response,
-      data: result,
-    });
+      message:
+        result.length > 0 ? "Orders fetched successfully!" : "Order Not found",
+    };
+
+    if (result.length > 0) {
+      response.data = result;
+    }
+    res.status(200).json(response);
   } catch {
     res.status(500).json({
       success: false,
