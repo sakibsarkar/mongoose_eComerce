@@ -41,19 +41,19 @@ const getAllOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
     try {
         const { email } = req.query;
         // response data
-        const response = {
-            message: "Orders fetched successfully!",
-        };
         const find = {};
         if (email) {
             find.email = email;
-            response.message = "Orders fetched successfully for user email!";
         }
         const result = yield getAllOrderService(find);
-        if (result.length <= 0 && email) {
-            response.message = "Order not found";
+        const response = {
+            success: result.length > 0,
+            message: result.length > 0 ? "Orders fetched successfully!" : "Order Not found",
+        };
+        if (result.length > 0) {
+            response.data = result;
         }
-        res.status(200).json(Object.assign(Object.assign({ success: result.length > 0 }, response), { data: result }));
+        res.status(200).json(response);
     }
     catch (_a) {
         res.status(500).json({

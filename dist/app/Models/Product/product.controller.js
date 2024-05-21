@@ -55,14 +55,22 @@ const getAllProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
         const { searchTerm } = req.query;
         const find = {};
         if (searchTerm) {
-            find.name = new RegExp(searchTerm, "i");
+            find["$or"] = [
+                { name: new RegExp(searchTerm, "i") },
+                { description: new RegExp(searchTerm, "i") },
+            ];
         }
         const result = yield getAllProductService(find);
-        res.status(200).json({
-            success: true,
-            message: "Products fetched successfully!",
-            data: result,
-        });
+        const response = {
+            success: result.length > 0,
+            message: result.length > 0
+                ? "Products fetched successfully!"
+                : "Product Not found",
+        };
+        if (result.length > 0) {
+            response.data = result;
+        }
+        res.status(200).json(response);
     }
     catch (error) {
         res.status(400).json({
