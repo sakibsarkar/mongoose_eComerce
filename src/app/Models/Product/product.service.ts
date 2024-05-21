@@ -1,4 +1,4 @@
-import { IAnyObject } from "../../utils/types";
+import { IAnyObject } from "../../../utils/types";
 import IProduct from "./product.interface";
 import Product from "./product.model";
 

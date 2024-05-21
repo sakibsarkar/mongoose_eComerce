@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { IAnyObject } from "../../utils/types";
+import { IAnyObject } from "../../../utils/types";
 import Product from "../Product/product.model";
 import IOrder from "./order.interface";
 import Order from "./order.model";
@@ -72,8 +72,8 @@ const createOrderService = async (orderData: IOrder, res: Response) => {
   } catch (error) {
     res.status(400).send({
       success: false,
-      message: "Order created successfully!",
-      error,
+      message: "Cant't create order",
+
     });
   }
 };

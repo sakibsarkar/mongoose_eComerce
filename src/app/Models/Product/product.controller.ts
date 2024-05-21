@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { IAnyObject } from "../../utils/types";
+import { IAnyObject } from "../../../utils/types";
 import { zodProduct } from "./product.interface";
 import productService from "./product.service";
 
@@ -28,7 +28,6 @@ export const createProductController = async (req: Request, res: Response) => {
       return res.json({
         success: false,
         message: "Invalid data formate",
-        error,
       });
     }
 
@@ -43,7 +42,6 @@ export const createProductController = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: "Internal server error",
-      error,
     });
   }
 };
@@ -55,20 +53,31 @@ export const getAllProductController = async (req: Request, res: Response) => {
 
     const find: IAnyObject = {};
     if (searchTerm) {
-      find.name = new RegExp(searchTerm as string, "i");
+      find["$or"] = [
+        { name: new RegExp(searchTerm as string, "i") },
+        { description: new RegExp(searchTerm as string, "i") },
+      ];
     }
 
     const result = await getAllProductService(find);
-    res.status(200).json({
-      success: true,
-      message: "Products fetched successfully!",
-      data: result,
-    });
+
+    const response: IAnyObject = {
+      success: result.length > 0,
+      message:
+        result.length > 0
+          ? "Products fetched successfully!"
+          : "Product Not found",
+    };
+
+    if (result.length > 0) {
+      response.data = result;
+    }
+
+    res.status(200).json(response);
   } catch (error) {
     res.status(400).json({
       success: false,
       message: "products not found",
-      error,
     });
   }
 };
@@ -97,7 +106,6 @@ export const getSingleProductController = async (
     res.status(400).json({
       success: false,
       message: "Product not found",
-      error,
     });
   }
 };
@@ -135,7 +143,6 @@ export const updateSingleProductController = async (
     res.status(400).json({
       success: false,
       message: "Couldn't update data",
-      error,
     });
   }
 };
@@ -164,7 +171,6 @@ export const deleteSingleProductController = async (
     res.status(400).json({
       success: false,
       message: "Failed to delete product",
-      error,
     });
   }
 };

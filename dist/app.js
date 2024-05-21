@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
-const order_routes_1 = __importDefault(require("./Models/Order/order.routes"));
-const product_routes_1 = __importDefault(require("./Models/Product/product.routes"));
+const order_routes_1 = __importDefault(require("./app/Models/Order/order.routes"));
+const product_routes_1 = __importDefault(require("./app/Models/Product/product.routes"));
 const app = (0, express_1.default)();
 // Middlewares
 app.use(express_1.default.json());
@@ -23,8 +23,8 @@ app.use((req, res) => {
         message: "Route not found",
     });
 });
-// Global Error Handler
-app.use((err, req, res, next) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+app.use((err, req, res) => {
     console.error(err.stack);
     res.status(500).json({
         success: false,

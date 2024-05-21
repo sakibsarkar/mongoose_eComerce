@@ -32,7 +32,6 @@ const createProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
             return res.json({
                 success: false,
                 message: "Invalid data formate",
-                error,
             });
         }
         const result = yield createProductService(data);
@@ -46,7 +45,6 @@ const createProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
         res.status(500).json({
             success: false,
             message: "Internal server error",
-            error,
         });
     }
 });
@@ -70,7 +68,6 @@ const getAllProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
         res.status(400).json({
             success: false,
             message: "products not found",
-            error,
         });
     }
 });
@@ -96,7 +93,6 @@ const getSingleProductController = (req, res) => __awaiter(void 0, void 0, void 
         res.status(400).json({
             success: false,
             message: "Product not found",
-            error,
         });
     }
 });
@@ -129,7 +125,6 @@ const updateSingleProductController = (req, res) => __awaiter(void 0, void 0, vo
         res.status(400).json({
             success: false,
             message: "Couldn't update data",
-            error,
         });
     }
 });
@@ -155,7 +150,6 @@ const deleteSingleProductController = (req, res) => __awaiter(void 0, void 0, vo
         res.status(400).json({
             success: false,
             message: "Failed to delete product",
-            error,
         });
     }
 });

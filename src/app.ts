@@ -1,7 +1,7 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import morgan from "morgan";
-import order from "./Models/Order/order.routes";
-import product from "./Models/Product/product.routes";
+import order from "./app/Models/Order/order.routes";
+import product from "./app/Models/Product/product.routes";
 
 const app = express();
 
@@ -24,8 +24,8 @@ app.use((req: Request, res: Response) => {
   });
 });
 
-// Global Error Handler
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+app.use((err: any, req: Request, res: Response) => {
   console.error(err.stack);
   res.status(500).json({
     success: false,

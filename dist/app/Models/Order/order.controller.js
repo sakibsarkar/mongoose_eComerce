@@ -25,7 +25,7 @@ const createOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
             messaeg: "No content found",
         });
     }
-    const { success, data, error } = order_interface_1.zodOrder.safeParse(body);
+    const { data, error } = order_interface_1.zodOrder.safeParse(body);
     if (error) {
         return res.send({
             success: false,
@@ -55,7 +55,7 @@ const getAllOrderController = (req, res) => __awaiter(void 0, void 0, void 0, fu
         }
         res.status(200).json(Object.assign(Object.assign({ success: result.length > 0 }, response), { data: result }));
     }
-    catch (error) {
+    catch (_a) {
         res.status(500).json({
             success: false,
             message: "Orders not found",

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IAnyObject } from "../../utils/types";
+import { IAnyObject } from "../../../utils/types";
 import { zodOrder } from "./order.interface";
 import orderServices from "./order.service";
 
@@ -14,7 +14,7 @@ export const createOrderController = async (req: Request, res: Response) => {
       messaeg: "No content found",
     });
   }
-  const { success, data, error } = zodOrder.safeParse(body);
+  const { data, error } = zodOrder.safeParse(body);
   if (error) {
     return res.send({
       success: false,
@@ -52,7 +52,7 @@ export const getAllOrderController = async (req: Request, res: Response) => {
       ...response,
       data: result,
     });
-  } catch (error) {
+  } catch {
     res.status(500).json({
       success: false,
       message: "Orders not found",

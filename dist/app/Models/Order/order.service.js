@@ -64,8 +64,7 @@ const createOrderService = (orderData, res) => __awaiter(void 0, void 0, void 0,
     catch (error) {
         res.status(400).send({
             success: false,
-            message: "Order created successfully!",
-            error,
+            message: "Cant't create order",
         });
     }
 });
