@@ -13,7 +13,7 @@ const getAllProductService = async (query: IAnyObject) => {
 };
 
 const getSingleProductService = async (id: string) => {
-  const result = await Product.find({ _id: id });
+  const result = await Product.findOne({ _id: id });
   return result;
 };
 
