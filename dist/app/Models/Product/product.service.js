@@ -22,7 +22,7 @@ const getAllProductService = (query) => __awaiter(void 0, void 0, void 0, functi
     return result;
 });
 const getSingleProductService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield product_model_1.default.find({ _id: id });
+    const result = yield product_model_1.default.findOne({ _id: id });
     return result;
 });
 /* eslint-disable @typescript-eslint/no-explicit-any */

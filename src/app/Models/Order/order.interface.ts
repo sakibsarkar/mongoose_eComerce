@@ -1,9 +1,8 @@
-import { Schema } from "mongoose";
 import { z } from "zod";
 
 interface IOrder {
   email: string;
-  productId: string | Schema.Types.ObjectId;
+  productId: string;
   price: number;
   quantity: number;
 }
