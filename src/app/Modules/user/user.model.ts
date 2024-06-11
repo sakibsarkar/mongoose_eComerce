@@ -1,38 +1,38 @@
 import bcrypt from "bcrypt";
 import { Schema, model } from "mongoose";
 import Config from "../../config";
-import { IUser, UserModel } from "./user.interface";
+import IUser, { UserModel } from "./user.interface";
 const userSchema = new Schema<IUser>(
   {
-    id: {
+    name: {
       type: String,
       required: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
     },
     password: {
       type: String,
       required: true,
+      select: 0,
     },
-    needsPasswordChange: {
-      type: Boolean,
-      default: true,
+    phone: {
+      type: String,
+      required: true,
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
+      enum: ["admin", "user"],
+      default: "user",
     },
-    status: {
+    address: {
       type: String,
-      enum: ["in-progress", "blocked"],
-      default: "in-progress",
-    },
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
-    passwordChangedAt: {
-      type: Date,
-      required: false,
-      default: new Date(),
+      required: true,
     },
   },
   {
@@ -42,7 +42,6 @@ const userSchema = new Schema<IUser>(
 
 userSchema.pre("save", async function (next) {
   const user = this; // doc
-  // hashing password and save into DB
   user.password = await bcrypt.hash(
     user.password,
     Number(Config.bcrypt_salt_rounds)
@@ -50,14 +49,8 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// set '' after saving password
-userSchema.post("save", function (doc, next) {
-  doc.password = "";
-  next();
-});
-
-userSchema.statics.isUserExistsByCustomId = async function (id: string) {
-  return await User.findOne({ id }).select("+password");
+userSchema.statics.isUserExistsByEmail = async function (email: string) {
+  return await User.findOne({ email }).select("+password");
 };
 
 userSchema.statics.isPasswordMatched = async function (
@@ -65,15 +58,6 @@ userSchema.statics.isPasswordMatched = async function (
   hashedPassword
 ) {
   return await bcrypt.compare(plainTextPassword, hashedPassword);
-};
-
-userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
-  passwordChangedTimestamp: Date,
-  jwtIssuedTimestamp: number
-) {
-  const passwordChangedTime =
-    new Date(passwordChangedTimestamp).getTime() / 1000;
-  return passwordChangedTime > jwtIssuedTimestamp;
 };
 
 export const User = model<IUser, UserModel>("User", userSchema);
