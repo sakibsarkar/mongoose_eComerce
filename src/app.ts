@@ -1,7 +1,7 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import morgan from "morgan";
-import order from "./app/Models/Order/order.routes";
-import product from "./app/Models/Product/product.routes";
+import globalErrorHandler from "./app/middlewere/globalError";
+import { notFound } from "./app/middlewere/not-foun";
 
 const app = express();
 
@@ -13,24 +13,10 @@ app.get("/", (req, res) => {
   res.send("Hello from server");
 });
 
-app.use("/api", product);
-app.use("/api", order);
-
 // 404 Handler
-app.use((req: Request, res: Response) => {
-  res.status(404).json({
-    success: false,
-    message: "Route not found",
-  });
-});
+app.use(notFound);
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-app.use((err: any, req: Request, res: Response) => {
-  console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    message: "Internal Server Error",
-  });
-});
+app.use(globalErrorHandler);
 
 export default app;

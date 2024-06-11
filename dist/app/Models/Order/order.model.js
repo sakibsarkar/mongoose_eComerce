@@ -4,8 +4,7 @@ const mongoose_1 = require("mongoose");
 const orderSchema = new mongoose_1.Schema({
     email: { type: String, required: true },
     productId: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: "Product",
+        type: String,
         required: true,
     },
     price: { type: Number, required: true },

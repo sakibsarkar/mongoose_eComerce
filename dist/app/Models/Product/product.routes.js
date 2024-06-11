@@ -16,5 +16,4 @@ router.get("/products/:productId", product_controller_1.getSingleProductControll
 router.put("/products/:productId", product_controller_1.updateSingleProductController);
 // delete single product
 router.delete("/products/:productId", product_controller_1.deleteSingleProductController);
-router.get("/testing", (req, res) => res.send("hello tester"));
 exports.default = router;
